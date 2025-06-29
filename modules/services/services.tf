@@ -1,6 +1,7 @@
 resource "kubernetes_service" "frontend" {
   metadata {
     name = "frontend"
+    namespace = "dev"
     labels = {
       app = "myapp"
       tier = "frontend"
@@ -24,6 +25,7 @@ resource "kubernetes_service" "frontend" {
 resource "kubernetes_service" "backend" {
   metadata {
     name = "backend"
+    namespace = "dev"
     labels = {
       app = "myapp"
       tier = "backend"
@@ -48,6 +50,7 @@ resource "kubernetes_service" "backend" {
 resource "kubernetes_service" "database" {
   metadata {
     name = "database"
+    namespace = "dev"
     labels = {
       app = "myapp"
       tier = "database"
@@ -71,6 +74,7 @@ resource "kubernetes_service" "database" {
 resource "kubernetes_service" "frontend_nodeport" {
   metadata {
     name = "frontend-nodeport"
+    namespace = "dev"
     labels = {
       app = "myapp"
       tier = "frontend"
