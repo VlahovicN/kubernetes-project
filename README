@@ -1,0 +1,47 @@
+# Kubernetes Terraform Project - On-Prem Workloads
+
+## 🚀 Overview
+This project leverages **Terraform** to orchestrate application workloads on an existing **Kubernetes cluster** (on-premises or cloud-managed), entirely without traditional YAML manifests.  
+All Kubernetes resources are provisioned via the **Terraform `kubernetes_*` provider**, enabling a complete Infrastructure-as-Code (IaC) approach for managing Kubernetes workloads.
+
+> 🚧 **Note:** This project is still ongoing and actively being improved with additional features and optimizations.
+
+## 🔧 What does this project deploy?
+✅ **Namespace**
+- Creates a dedicated `dev` namespace in your cluster.
+
+✅ **Deployments**
+- **Frontend**: an `nginx` deployment with 3 replicas.
+- **Backend**: an `httpd` (Apache) deployment with 3 replicas.
+- **Database**: a `redis` deployment with 3 replicas.
+- Each deployment has clearly defined **CPU and Memory requests & limits** to ensure predictable resource allocation.
+- Utilizes **node affinity** and **tolerations** to schedule pods on specific nodes based on `tier` labels (e.g., `frontend-backend`, `database`).
+
+✅ **Services**
+- Each workload has its own `ClusterIP` Service for internal communication:
+  - `frontend:80`
+  - `backend:80`
+  - `database:6379`
+- Additionally, there's a `NodePort` Service on port `30080` for the frontend, exposing it externally via the worker nodes’ IP addresses.
+
+## ⚙️ How to use
+### Prerequisites
+- Existing Kubernetes cluster
+- Terraform installed
+
+### Deploy the infrastructure
+```bash
+terraform init
+terraform plan
+terraform apply
+
+
+
+
+
+
+Nodes preparations (labels & taints)
+kubectl label node minikube-m02 tier=frontend-backend
+kubectl label node minikube-m03 tier=database
+kubectl taint nodes minikube-m02 tier=frontend-backend:NoExecute
+kubectl taint nodes minikube-m03 tier=database:NoExecute
