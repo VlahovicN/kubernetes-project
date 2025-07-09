@@ -27,7 +27,11 @@ resource "kubernetes_deployment" "frontend" {
         container {
           image = "nginx:latest"
           name = "nginx"
-
+          env_from {
+            config_map_ref {
+              name = var.nginx_configmap_name
+            }
+          }
           resources {
             limits = {
               cpu = "500m"
@@ -159,10 +163,11 @@ resource "kubernetes_deployment" "database" {
         container {
           image = "redis:latest"
           name = "redis"
+          
           resources {
             limits = {
-              cpu = "500m"
-              memory = "256Mi"
+              cpu = "1000m"
+              memory = "512Mi"
             }
             requests = {
               cpu = "200m"

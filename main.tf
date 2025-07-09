@@ -16,6 +16,8 @@ provider "kubernetes" {
 
 module "deployments" {
   source = "./modules/deployments"
+  nginx_configmap_name = module.configmaps.nginx_configmap_name
+  database_secret_name = module.secrets.database_secret_name
 }
 
 ########## SERVICES ############
@@ -32,3 +34,17 @@ resource "kubernetes_namespace" "dev" {
     name = "dev"
   }
 }
+
+
+########## ConfigMaps ############
+module "configmaps" {
+  source = "./modules/configmaps"
+}
+
+########## Secrets #############
+module "secrets" {
+  source = "./modules/secrets"
+}
+
+
+
