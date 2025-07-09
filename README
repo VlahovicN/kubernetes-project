@@ -24,6 +24,25 @@ All Kubernetes resources are provisioned via the **Terraform `kubernetes_*` prov
   - `database:6379`
 - Additionally, there's a `NodePort` Service on port `30080` for the frontend, exposing it externally via the worker nodes’ IP addresses.
 
+✅ **ConfigMaps & Secrets**
+
+- Manages Kubernetes ConfigMaps to inject environment variables into the nginx containers (e.g. ENVIRONMENT and APP_VERSION).
+- Creates Secrets to securely store sensitive data like the REDIS_PASSWORD for the redis deployment.
+
+✅ **Horizontal Pod Autoscaler**
+- Configured for both frontend and backend deployments.
+- Automatically scales pods between 3 and 7 replicas based on CPU and Memory utilization thresholds set at 50%.
+
+✅ **Vertical Pod Autoscaler**
+- Configured for the database (redis) deployment.
+- Automatically adjusts recommended CPU and Memory requests within defined minAllowed and maxAllowed resource constraints.
+
+
+> 📌 **Note:**  
+> HPA and VPA are implemented via native YAML manifests as a best practice for workload-level scaling.
+> This approach avoids provider-specific HCL complexities and aligns with common industry patterns,
+> keeping Terraform focused on cluster infrastructure while scaling policies remain flexible and easily adjustable.
+
 ## ⚙️ How to use
 ### Prerequisites
 - Existing Kubernetes cluster
@@ -37,7 +56,10 @@ terraform apply
 
 
 
-
+VPA and HPA needs to be deployed manually: 
+cd ~/kubernetes
+kubectl apply -f vpa.yaml
+kubectl apply -f hpa.yaml
 
 
 Nodes preparations (labels & taints)
