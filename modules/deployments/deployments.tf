@@ -24,6 +24,7 @@ resource "kubernetes_deployment" "frontend" {
         }
       }
       spec {
+        priority_class_name = var.priority_class_frontendbackend
         container {
           image = "nginx:latest"
           name = "nginx"
@@ -94,6 +95,7 @@ resource "kubernetes_deployment" "backend" {
         }
       }
       spec {
+        priority_class_name = var.priority_class_frontendbackend
         container {
           image = "httpd:latest"
           name = "apache"
@@ -160,6 +162,7 @@ resource "kubernetes_deployment" "database" {
         }
       }
       spec {
+        priority_class_name = var.priority_class_database
         container {
           image = "redis:latest"
           name = "redis"

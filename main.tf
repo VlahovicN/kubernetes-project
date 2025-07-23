@@ -18,6 +18,8 @@ module "deployments" {
   source = "./modules/deployments"
   nginx_configmap_name = module.configmaps.nginx_configmap_name
   database_secret_name = module.secrets.database_secret_name
+  priority_class_frontendbackend = module.priorityclasses.priority_class_frontendbackend
+  priority_class_database = module.priorityclasses.priority_class_database
 }
 
 ########## SERVICES ############
@@ -46,5 +48,9 @@ module "secrets" {
   source = "./modules/secrets"
 }
 
+######## PriorityClasses ########
+module "priorityclasses" {
+  source = "./modules/priority_classes"
+}
 
 

@@ -37,6 +37,13 @@ All Kubernetes resources are provisioned via the **Terraform `kubernetes_*` prov
 - Configured for the database (redis) deployment.
 - Automatically adjusts recommended CPU and Memory requests within defined minAllowed and maxAllowed resource constraints.
 
+✅ **Priority Classes**
+- Introduced two PriorityClass resources:
+    1. frontendbackend with a value of 1000, applied to frontend and backend workloads.
+    2. database with a value of 100000, giving highest scheduling priority to the database pods.
+- These priority classes ensure critical workloads (like Redis) are scheduled first when cluster resources are constrained.
+- Applied via the priority_class_name attribute in Terraform deployments for better pod scheduling control.
+
 
 > 📌 **Note:**  
 > HPA and VPA are implemented via native YAML manifests as a best practice for workload-level scaling.
